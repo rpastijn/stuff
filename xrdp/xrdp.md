@@ -41,7 +41,6 @@ In the default Linux 7, the required repositories are available and activated so
 # <copy>yum -y install xrdp tigervnc-server terminus-fonts terminus-fonts-console cabextract</copy>
 
 Loaded plugins: langpacks, ulninfo
-Package 1:java-1.8.0-openjdk-1.8.0.242.b08-1.el7.x86_64 already installed and latest version
 Resolving Dependencies
 
 <removed long list)
