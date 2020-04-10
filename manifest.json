@@ -11,6 +11,6 @@
             "description":"Setup xRDP on Linux 7 on OCI",
             "publisheddate": "03/20/2020",
             "filename":"./xrdp/xrdp.md"
-        },
+        }
     ]
 }
