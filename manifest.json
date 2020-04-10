@@ -1,0 +1,16 @@
+{
+    "tutorials": [
+        {
+            "title": "Welcome",
+            "description":"Welcome to my repo",
+            "publisheddate": "01/15/2020",
+            "filename":"./welcome/welcome.md"
+        },
+        {
+            "title": "xRDP on Linux 7",
+            "description":"Setup xRDP on Linux 7 on OCI",
+            "publisheddate": "03/20/2020",
+            "filename":"./xrdp/xrdp.md"
+        },
+    ]
+}
