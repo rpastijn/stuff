@@ -169,6 +169,54 @@ If you want to keep SELinux enabled, you need to change the settings so SELinux 
 # <copy>chcon --type=bin_t /usr/sbin/xrdp-sesman</copy>
 ````
 
+Be aware that the above commands only enable xRDP functionalty. The Desktop GUI install will automatically start other programs as well (Location services, AVC) which trigger SELinux. Also other application like FireFox will trigger SELinux as well and cause a pop-up on the users desktop.
+
+### Optional changes ###
+
+#### Auto updates through PackageKit ####
+
+By default, the system checks regularly if there are any updates for the packages you use. To prevent the automatic updates or the pop-ups on the screen, remove PackageKit from the system:
+
+````
+# <copy>yum -y remove PackageKit*</copy>
+
+Loaded plugins: langpacks, ulninfo
+Resolving Dependencies
+--> Running transaction check
+---> Package PackageKit.x86_64 0:1.1.10-2.0.1.el7 will be erased
+
+================================================================================
+ Package                        Arch     Version            Repository     Size
+================================================================================
+Removing:
+ PackageKit                     x86_64   1.1.10-2.0.1.el7   @ol7_latest   2.6 M
+ PackageKit-command-not-found   x86_64   1.1.10-2.0.1.el7   @ol7_latest    44 k
+ PackageKit-glib                x86_64   1.1.10-2.0.1.el7   @ol7_latest   484 k
+ PackageKit-gstreamer-plugin    x86_64   1.1.10-2.0.1.el7   @ol7_latest    20 k
+ PackageKit-gtk3-module         x86_64   1.1.10-2.0.1.el7   @ol7_latest    22 k
+ PackageKit-yum                 x86_64   1.1.10-2.0.1.el7   @ol7_latest   301 k
+Removing for dependencies:
+ gnome-initial-setup            x86_64   3.28.0-2.el7       @ol7_latest   2.5 M
+ gnome-packagekit               x86_64   3.28.0-1.el7       @ol7_latest   0.0
+ gnome-packagekit-common        x86_64   3.28.0-1.el7       @ol7_latest   6.4 M
+ gnome-packagekit-installer     x86_64   3.28.0-1.el7       @ol7_latest   202 k
+ gnome-packagekit-updater       x86_64   3.28.0-1.el7       @ol7_latest   194 k
+ gnome-software                 x86_64   3.28.2-3.el7       @ol7_latest   8.4 M
+
+(Removed long list)
+Dependency Removed:
+  gnome-initial-setup.x86_64 0:3.28.0-2.el7
+  gnome-packagekit.x86_64 0:3.28.0-1.el7
+  gnome-packagekit-common.x86_64 0:3.28.0-1.el7
+  gnome-packagekit-installer.x86_64 0:3.28.0-1.el7
+  gnome-packagekit-updater.x86_64 0:3.28.0-1.el7
+  gnome-software.x86_64 0:3.28.2-3.el7
+
+Complete!
+````
+
+
+
 ### Start xRDP ###
 
 After everything has been configured, we can start xRDP:
