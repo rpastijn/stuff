@@ -6,6 +6,7 @@ This repository will be a collection of things that I found and described. I use
 
 ## Contents description
 
+- Links: Various links and URLs to PTS and other peoples resources
 - xRDP: How to setup xrdp on a clean OCI Linux 7 image
 
 ## Acknowledgements

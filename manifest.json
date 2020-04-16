@@ -4,13 +4,19 @@
             "title": "Welcome",
             "description":"Welcome to my repo",
             "publisheddate": "01/15/2020",
-            "filename":"./welcome/welcome.md"
+            "filename":"./dir-welcome/welcome.md"
+        },
+        {
+            "title": "URLs and Links",
+            "description":"Various Links to other peoples resources",
+            "publisheddate": "01/15/2020",
+            "filename":"./dir-links/links.md"
         },
         {
             "title": "xRDP on Linux 7",
             "description":"Setup xRDP on Linux 7 on OCI",
             "publisheddate": "03/20/2020",
-            "filename":"./xrdp/xrdp.md"
+            "filename":"./dir-xrdp/xrdp.md"
         }
     ]
 }
