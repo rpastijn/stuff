@@ -6,7 +6,8 @@ This repository will be a collection of things that I found and described. I use
 
 ## Contents description
 
-- Links: Various links and URLs to PTS and other peoples resources
+- Links: Various links and URLs to PTS and other peoples resources (20-APR-2020)
+- Email: How to setup email on DBaaS (extra steps compared to ADB) (20-APR-2020)
 - xRDP: How to setup xrdp on a clean OCI Linux 7 image
 
 ## Acknowledgements
