@@ -13,6 +13,12 @@
             "filename":"./dir-links/links.md"
         },
         {
+            "title": "Email from DBaaS",
+            "description":"Extra steps to send email from DBaaS",
+            "publisheddate": "01/15/2020",
+            "filename":"./dir-email/email.md"
+        },
+        {
             "title": "xRDP on Linux 7",
             "description":"Setup xRDP on Linux 7 on OCI",
             "publisheddate": "03/20/2020",
