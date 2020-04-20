@@ -547,7 +547,7 @@ DATA | APP_ROOT | Data visible in APP_PDB, cannot change data from APP PDB |
 EXTENDED DATA | APP_ROOT | Data visible in APP_PDB, cannot change shared data |
  | APP_PDB | All actions allowed, data is stored locally QUERYING ACROSS CONTAINERS |
 
-## Container queries ##
+<!---## Container queries ##
 
 We can query across containers. For example, If we have an application for multiple stores where each store has their own PDB, we can very easily find out how many orders each store has received.
 
@@ -580,4 +580,4 @@ While querying the v$pdbs table we have discovered that the store with ID=4 is p
 The same way, we could add lines from a centralized account into the various other tables, for example the STORE_SALES table if the sale was done through a world wide internet system.
 If we would not have specified the CON_ID in the insert statement, all connected Application PDBs would have executed the statement and the article would have been inserted in all tables of the PDBs.
 
-````
+```` -->
