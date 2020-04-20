@@ -198,58 +198,322 @@ ID
 1 
 ````
 
-ToDo
+## Patching a application ##
+
+Patching means changing the application in a non-destructive way. Basically, do anything that would not result in data loss. For example, we can add a new table to the application, add a column to an existing table or add data into the existing tables. Dropping a table would not be allowed as this would mean data loss. 
+
+Here is an example:
 
 ````
+SQL> <copy>alter session set container=APP_ROOT;</copy>
 
-PATCHING AN APPLICATION AND PUSHING THE CHANGES
-Patching means changing the application in a non-destructive way. Basically, do anything that would not result in data loss. For example, we can add a new table to the application, add a column to an existing table or add data into the existing tables. Dropping a table would not be allowed as this would mean data loss. Here is an example:
- START TO CREATE A PATCH FOR THE APPLICATION APP01 WITH VERSION 1.1 SQL> alter session set container=APP_ROOT; Session altered. SQL> alter pluggable database application APP01 begin patch 1.1; Pluggable database altered.
- CREATE A NEW TABLE CALLED MYTABLE2 SQL> create table app_test.mytable2 (id number); Table created.
- ADD A COLUMN TO THE EXISTING TABLE APP_TEST.MYTABLE SQL> alter table app_test.mytable add DESCRIPTION varchar2(100); Table altered.
-37
- INSERT A RECORD IN THE EXISTING TABLE APP_TEST.MYTABLE SQL> insert into app_test.mytable values (2,'Two'); 1 row created. SQL> commit; Commit complete.
- FINISH THE PATCHING PROCESS OF THE APPLICATION SQL> alter pluggable database application APP01 end patch; Pluggable database altered.
+Session altered.
+````
+````
+SQL> <copy>alter pluggable database application APP01 begin patch 1.1;</copy>
+
+Pluggable database altered.
+````
+
+We can now start making changes:
+
+````
+SQL> <copy>create table app_test.mytable2 (id number);</copy>
+
+Table created.
+````
+
+or
+
+````
+SQL> <copy>alter table app_test.mytable add DESCRIPTION varchar2(100);</copy>
+
+Table altered.
+````
+
+or
+
+````
+SQL> <copy>insert into app_test.mytable values (2,'Two');</copy>
+
+1 row created.
+````
+
+````
+SQL> <copy>commit;</copy>
+
+Commit complete.
+````
+
+After all this, we finish the creation of the patch so that we can roll-out the patch:
+
+````
+SQL> <copy>alter pluggable database application APP01 end patch;</copy>
+
+Pluggable database altered.
+````
+
 If we connect to the Application PDB, no changes are forwarded yet. We could automate this process but by default it is a manual action to sync the Application in the Application PDB with the one in the Application Root.
- CONNECT TO THE APPLICATION PDB AND CHECK THE CURRENT STATUS SQL> alter session set container=APP_PDB1; Session altered. SQL> desc app_test.mytable Name Null? Type ----------------------------------------- -------- ---------------------------- ID NUMBER SQL> desc app_test.mytable2 ERROR: ORA-04043: object app_test.mytable2 does not exist
-38
- SYNC THE INSTALLED APPLICATION WITH THE LATEST VERSION IN THE APP_ROOT SQL> alter pluggable database application APP01 sync; Pluggable database altered. SQL> desc app_test.mytable Name Null? Type ----------------------------------------- -------- ---------------------------- ID NUMBER DESCRIPTION VARCHAR2(100) SQL> desc app_test.mytable2 Name Null? Type ----------------------------------------- -------- ---------------------------- ID NUMBER SQL> select * from app_test.mytable; ID DESCRIPTION ---- ------------ 1 2 Two 2 rows selected.
-Upgrading an application works in a similar way but requires more resources. The commands to create the list of changes and the steps to Sync are the samen. SHARED TABLES IN PDBS
+
+````
+SQL> <copy>alter session set container=APP_PDB1;</copy>
+
+Session altered.
+````
+
+````
+SQL> <copy>desc app_test.mytable</copy>
+
+Name       Null?    Type 
+---------- -------- --------------- 
+ID                  NUMBER 
+````
+````
+SQL> <copy>desc app_test.mytable2</copy>
+
+ERROR: ORA-04043: object app_test.mytable2 does not exist
+````
+
+To push the changes to the application PDB, we need to sync it with the application root:
+
+````
+SQL> <copy>alter pluggable database application APP01 sync;</copy>
+
+Pluggable database altered.
+````
+````
+SQL> <copy>desc app_test.mytable</copy>
+
+Name        Null?    Type 
+----------- -------- ---------------------------- 
+ID                   NUMBER 
+DESCRIPTION          VARCHAR2(100)
+````
+````
+SQL> <copy>desc app_test.mytable2</copy>
+
+Name        Null?    Type 
+----------- -------- ---------------------------- 
+ID                   NUMBER
+````
+````
+SQL> <copy>select * from app_test.mytable;</copy>
+ID   DESCRIPTION 
+---- ------------ 
+1 
+2    Two 
+
+2 rows selected.
+````
+
+Upgrading an application works in a similar way but requires more resources. The commands to create the list of changes and the steps to Sync are the samen. 
+
+## Shared tables ##
+
 In the previous labs, tables were created locally in each PDB and data was stored locally in each PDB as well. Inside Application Containers we can do more than simple creating a single table per PDB. For example; if each Application PDB needs a ZIP-code translation table, it would good to have the data stored once but accessible in each PDB.
+
 Sharing table (meta) data between de Application Root and Application PDBs can only be done if the schema owner of the tables is a 'common' user (common user = single user available in all PDBs).
- INITIATE A NEW PATCH FOR THE APPLICATION APP01 SQL> alter pluggable database application APP01 begin patch 1.3; Pluggable database altered.
- CREATE A NEW TABLESPACE FOR THE NEW COMMON USER SQL> create tablespace users datafile size 100M; Tablespace created.
-39
- CREATE A NEW COMMON USER AVAILABLE IN ALL CONTAINERS WITH DEFAULT TABLESPACE USERS SQL> create user app_common identified by app_common default tablespace users container=all; User created. SQL> alter user app_common quota unlimited on users; User altered. SQL> grant connect, resource to app_common Grant succeeded.
- CREATE 3 NEW TABLES, EACH WITH A DIFFERENT SHARING CLAUSE SQL> create table app_common.T_DATA sharing=data (id number); Table created. SQL> create table app_common.T_METADATA sharing=METADATA (id number); Table created. SQL> create table app_common.T_EXTENDED sharing=EXTENDED DATA (id number); Table created.
- FINALIZE THE PATCHING PROCEDURE SQL> alter pluggable database application APP01 end patch; Pluggable database altered.
-TO SEE WHAT HAPPENS WITH THE DATA, INSERT A VALUE IN EACH TABLE SQL> insert into app_common.T_DATA values (1); 1 row created. SQL> insert into app_common.T_EXTENDED values (1); 1 row created. SQL> insert into app_common.T_METADATA values (1); 1 row created. SQL> commit; Commit complete.
-40
+
+````
+SQL> <copy>alter pluggable database application APP01 begin patch 1.3;</copy>
+
+Pluggable database altered.
+````
+
+We are going to create a new tablespace for the common user as an example:
+
+````
+SQL> <copy>create tablespace users datafile size 100M;</copy>
+
+Tablespace created.
+````
+
+We can now create the new common user:
+
+````
+SQL> <copy>create user app_common identified by app_common default tablespace users container=all; </copy>
+
+User created.
+````
+````
+SQL> <copy>alter user app_common quota unlimited on users;</copy>
+
+User altered.
+````
+
+````
+SQL> <copy>grant connect, resource to app_common</copy>
+
+Grant succeeded.
+````
+
+We can now also create 3 tables, each with a different sharing clause:
+
+````
+SQL> <copy>create table app_common.T_DATA sharing=data (id number);</copy>
+
+Table created.
+````
+````
+SQL> <copy>create table app_common.T_METADATA sharing=METADATA (id number);</copy>
+
+Table created.
+````
+````
+SQL> <copy>create table app_common.T_EXTENDED sharing=EXTENDED DATA (id number);</copy>
+
+Table created.
+````
+
+After this, we can finalize the patching procedure.
+
+````
+SQL> <copy>alter pluggable database application APP01 end patch;</copy>
+
+Pluggable database altered.
+````
+
+To see what happens with the data, we will now insert some values in each table:
+
+````
+SQL> <copy>insert into app_common.T_DATA values (1);</copy>
+
+1 row created.
+````
+````
+SQL> <copy>insert into app_common.T_EXTENDED values (1);</copy>
+
+1 row created.
+````
+````
+SQL> <copy>insert into app_common.T_METADATA values (1);</copy>
+
+1 row created.
+````
+````
+SQL> <copy>commit;</copy>
+
+Commit complete.
+````
+
 Now we can patch the application in the Application PDB and see the effect of our actions.
- PATCH THE APPLICATION APP01 IN APP_PDB1 SQL> alter session set container=APP_PDB1; Session altered. SQL> alter pluggable database application APP01 sync; Pluggable database altered.
- QUERY THE CONTENTS OF THE CREATED TABLES SQL> select * from app_common.T_DATA; ID ---------- 1 SQL> select * from app_common.T_EXTENDED; ID ---------- 1 SQL> select * from app_common.T_METADATA; no rows selected
- INSERT A VALUE IN THE CREATED TABLES SQL> insert into app_common.T_DATA values (2); insert into app_common.T_DATA values (2) * ERROR at line 1: ORA-65097: DML into a data link table is outside an application action SQL> insert into app_common.T_EXTENDED values (2); 1 row created. SQL> insert into app_common.T_METADATA values (2); 1 row created. SQL> commit; Commit complete.
-41
- As a last step, try to delete the record with ID=1 from the tables SQL> delete app_common.T_DATA where id=1; delete app_common.T_DATA where id=1 * ERROR at line 1: ORA-65097: DML into a data link table is outside an application action SQL> delete app_common.T_DATA where id=1; delete app_common.T_DATA where id=1 * ERROR at line 1: ORA-65097: DML into a data link table is outside an application action SQL> delete app_common.T_METADATA where id=1; 0 rows deleted.
+
+````
+SQL> <copy>alter session set container=APP_PDB1;</copy>
+
+Session altered.
+````
+````
+SQL> <copy>alter pluggable database application APP01 sync;</copy>
+
+Pluggable database altered.
+````
+
+Execute the following statements to see the result:
+
+````
+SQL> <copy>select * from app_common.T_DATA;</copy>
+
+ID 
+---------- 
+1 
+````
+````
+SQL> <copy>select * from app_common.T_EXTENDED;</copy>
+
+ID 
+---------- 
+1 
+````
+````
+SQL> <copy>select * from app_common.T_METADATA;</copy>
+
+no rows selected
+````
+
+Here is the effect of inserting data into the shared tables in the application PDB:
+
+````
+SQL> <copy>insert into app_common.T_DATA values (2);</copy>
+
+insert into app_common.T_DATA values (2);
+ERROR at line 1: 
+ORA-65097: DML into a data link table is outside an application action 
+````
+````
+SQL> <copy>insert into app_common.T_EXTENDED values (2);</copy>
+
+1 row created.
+````
+````
+SQL> <copy>insert into app_common.T_METADATA values (2);</copy>
+
+1 row created.
+````
+````
+SQL> <copy>commit;></copy>
+
+Commit complete.
+````
+
+As a last step, try to delete the record with ID=1 from the tables 
+
+````
+SQL> <copy>delete app_common.T_DATA where id=1; </copy>
+
+delete app_common.T_DATA where id=1 
+ERROR at line 1: 
+ORA-65097: DML into a data link table is outside an application action
+
+0 rows deleted.
+````
+
+- I miss the other 2 tables
+
+
 In some tables we inserted a record with ID 2. So let us see how much of this information is available in the APP_ROOT
- CONNECT TO THE APPLICATION ROOT AND QUERY THE 3 TABLES SQL> alter session set container=APP_ROOT; Session altered. SQL> select * from app_common.T_DATA; ID ---------- 1 SQL> select * from app_common.T_EXTENDED; ID ---------- 1 SQL> select * from app_common.T_METADATA; ID ---------- 1
-42
-To summarize, the SHARING clause has the following options SHARING clause DML IN Result
-METADATA
-APP_ROOT
-Result not visible in APP_PDB
-APP_PDB
-Acts like local table
-DATA
-APP_ROOT
-Data visible in APP_PDB, cannot change data from APP PDB
-APP_PDB
-Not allowed, read only table
-EXTENDED DATA
-APP_ROOT
-Data visible in APP_PDB, cannot change shared data
-APP_PDB
-All actions allowed, data is stored locally QUERYING ACROSS CONTAINERS
+
+````
+SQL> <copy>alter session set container=APP_ROOT;</copy>
+
+Session altered.
+```` 
+
+````
+SQL> <copy>select * from app_common.T_DATA;</copy>
+
+ID 
+----------
+         1
+````
+ 
+````
+SQL> <copy>select * from app_common.T_EXTENDED;</copy>
+
+ID 
+----------
+         1
+````
+ 
+````
+SQL> <copy>select * from app_common.T_METADATA;</copy>
+
+ID 
+----------
+         1
+````
+
+To summarize, the SHARING clause has the following options 
+
+SHARING clause | DML IN | Result |
+METADATA | APP_ROOT | Result not visible in APP_PDB |
+ | APP_PDB | Acts like local table |
+DATA | APP_ROOT | Data visible in APP_PDB, cannot change data from APP PDB |
+ | APP_PDB | Not allowed, read only table |
+EXTENDED DATA | APP_ROOT | Data visible in APP_PDB, cannot change shared data |
+ | APP_PDB | All actions allowed, data is stored locally QUERYING ACROSS CONTAINERS |
+
+````
 We can query across containers. For example, If we have an application for multiple stores where each store has their own PDB, we can very easily find out how many orders each store has received.
 To build a small demo environment, we are going to build an Application Root called STORE_MASTER with stores (read PDBs) in various countries in the world. We are going to start with stores in Amsterdam, Paris and London.
  RUN THE SCRIPT 02_SETUP_STORES.SH FROM THE ~/HOL/LAB05 DIRECTORY
