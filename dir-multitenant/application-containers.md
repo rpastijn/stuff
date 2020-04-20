@@ -316,6 +316,12 @@ In the previous labs, tables were created locally in each PDB and data was store
 Sharing table (meta) data between de Application Root and Application PDBs can only be done if the schema owner of the tables is a 'common' user (common user = single user available in all PDBs).
 
 ````
+SQL> <copy>alter session set container=APP_ROOT;</copy>
+
+Session altered.
+````
+
+````
 SQL> <copy>alter pluggable database application APP01 begin patch 1.3;</copy>
 
 Pluggable database altered.
