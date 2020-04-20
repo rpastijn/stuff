@@ -543,8 +543,8 @@ To summarize, the SHARING clause has the following options:
 <tr><th>SHARING clause</th><th>DML IN</th><th>Result</th></tr>
 <tr><td>DATA</td><td>APP_ROOT</td><td>Data visible in APP_PDB, cannot change data from APP PDB</th></tr>
 <tr><td></td><td>APP_PDB</td><td>Not allowed, read only table</th></tr>
-<tr><td>EXTENDED DATA</td><td>APP_ROOT</td><td>Data visible in APP_PDB, cannot change shared data</th></tr>
-<tr><td></td><td>APP_PDB</td><td>All actions allowed, data is stored locally</th></tr>
+<tr><td>EXTENDED DATA</td><td>APP_ROOT</td><td>Data from APP_ROOT visible in APP_PDB read-only</th></tr>
+<tr><td></td><td>APP_PDB</td><td>All actions allowed on local data, read-only for data from APP_ROOT</th></tr>
 <tr><td>METADATA</td><td>APP_ROOT</td><td>Data from APP_ROOT not visible in APP_PDB</th></tr>
 <tr><td></td><td>APP_PDB</td><td>Acts like local table</th></tr>
 </table>
