@@ -53,6 +53,20 @@ SQL> <copy>alter pluggable database APP_ROOT open;</copy>
 Pluggable database altered.
 ````
 
+> **Attention**: If this example is executed in an environment where Transparent Database Encryption (TDE) is active, you need to execute the following statement in every pluggable database (either APP_ROOT or APP_PDBs) before you can use it:
+````
+SQL> administer key management set key using tag '<PDB_NAME>' 
+     force keystore identified by <your wallet password> 
+     with backup using 'create_<PDB_NAME>';
+````
+> Example:
+````
+> SQL> <copy>administer key management set key using tag 'APP_ROOT' 
+     force keystore identified by <your wallet password> 
+     with backup using 'create_APP_ROOT';</copy>
+````
+> **Execute this statement inside every new Application root and every application PDB**
+
 ## Creating an application ##
 
 In order to create an application we need to be connected to the Application Root container. When an Application is created, you need to give it a version number and a name. All statements that are executed after the initial 'BEGIN' clause of the application are captured and can be replayed in the target PDB.
@@ -63,12 +77,6 @@ SQL> <copy>alter session set container=APP_ROOT;</copy>
 Session altered.
 ````
 
-For DBaaS or TDE, enable keystore:
-
-````
-ADMINISTER KEY MANAGEMENT SET KEY USING TAG 'APP_ROOT' FORCE KEYSTORE IDENTIFIED BY WElcome__123 WITH BACKUP USING 'create_APP_ROOT';
-````
-
 We can now define out first application with version 1.0:
 
 ````
@@ -76,6 +84,8 @@ SQL> <copy>alter pluggable database application APP01 begin install '1.0';</copy
 
 Pluggable database altered.
 ````
+
+In this example, all hard-coded PDB names have been removed and replaced by the variables from `sys_context` so that when the statement is executed inside a new PDB, it automatically adopts to this new PDB name.
 
 One of the things we can do now is create a new user and create some objects for this user.
 
@@ -123,7 +133,7 @@ SQL> <copy>select app_statement from dba_app_statements where app_name='APP01' o
 APP_STATEMENT
 --------------------------------------------------------------------------------
 SYS
-BEGIN DBMS_APPLICATION_INFO.SET_MODULE('sqlplus@multicom (TNS V1-V3)', ''); END;
+BEGIN DBMS_APPLICATION_INFO.SET_MODULE('sqlplus@mydb (TNS V1-V3)', ''); END;
 alter pluggable database application APP01 begin install '1.0'
 create user app_test identified by values *
 alter user APP_TEST quota unlimited on SYSTEM
@@ -161,6 +171,28 @@ SQL> <copy>alter pluggable database APP_PDB1 open;</copy>
 Pluggable database altered.
 ````
 
+After the creation, we log into the PDB to execute some commands:
+
+````
+SQL> <copy>alter session set container=APP_PDB1;</copy>
+
+Session altered.
+````
+
+> **Attention**: If this example is executed in an environment where Transparent Database Encryption (TDE) is active, you need to execute the following statement in every pluggable database (either APP_ROOT or APP_PDBs) before you can use it:
+````
+SQL> administer key management set key using tag '<PDB_NAME>' 
+     force keystore identified by <your wallet password> 
+     with backup using 'create_<PDB_NAME>';
+````
+> Example:
+````
+> SQL> <copy>administer key management set key using tag 'APP_PDB1' 
+     force keystore identified by <your wallet password> 
+     with backup using 'create_APP_PDB1';</copy>
+````
+> **Execute this statement inside every new Application root and every application PDB**
+
 The Application Root works basically as a regular container database. This means that if we query the databases available in this container, it will only show us the Application PDBs and not the remaining PDBs in the regular CDB$ROOT.
 
 ````
@@ -174,13 +206,8 @@ CON_ID     CON_NAME                       OPEN MODE  RESTRICTED
 
 Installing, upgrading or patching an application in an Application PDB is basically running the statements that have been captured during the initial INSTALL command in the Application Root. The running of the statements is called 'Syncing' to a particular version of the application. If no version has been specified during the SYNC process, the system will run all commands up to the latest version of the Application.
 
-Before we install the application we can see that no user APP_TEST exists in our new PDB.
+First, we can check if the user that we will be creating does not already exist in the new database. For example:
 
-````
-SQL> <copy>alter session set container=APP_PDB1;</copy>
-
-Session altered.
-````
 ````
 SQL> <copy>select username from dba_users where username='APP_TEST';</copy>
 
@@ -200,9 +227,9 @@ We can now check to see if the user has been created and whether or not our data
 ````
 SQL> <copy>select * from APP_TEST.MYTABLE;</copy>
 
-ID 
+        ID 
 ---------- 
-1 
+         1 
 ````
 
 ## Patching a application ##
@@ -307,8 +334,8 @@ ID                   NUMBER
 SQL> <copy>select * from app_test.mytable;</copy>
 ID   DESCRIPTION 
 ---- ------------ 
-1 
-2    Two 
+   1 
+   2 Two 
 
 2 rows selected.
 ````
@@ -321,11 +348,7 @@ In the previous labs, tables were created locally in each PDB and data was store
 
 Sharing table (meta) data between de Application Root and Application PDBs can only be done if the schema owner of the tables is a 'common' user (common user = single user available in all PDBs).
 
-````
-SQL> <copy>alter session set container=APP_ROOT;</copy>
-
-Session altered.
-````
+Now we can start to create our patch for our application: 
 
 ````
 SQL> <copy>alter pluggable database application APP01 begin patch 2;</copy>
@@ -355,7 +378,7 @@ User altered.
 ````
 
 ````
-SQL> <copy>grant connect, resource to app_common</copy>
+SQL> <copy>grant connect, resource to app_common;</copy>
 
 Grant succeeded.
 ````
@@ -389,24 +412,15 @@ Pluggable database altered.
 To see what happens with the data, we will now insert some values in each table:
 
 ````
-SQL> <copy>insert into app_common.T_DATA values (1);</copy>
+SQL> <copy>begin
+       insert into app_common.T_DATA values (1);
+       insert into app_common.T_EXTENDED values (1);
+       insert into app_common.T_METADATA values (1);
+       commit;
+     end;
+     /</copy>
 
-1 row created.
-````
-````
-SQL> <copy>insert into app_common.T_EXTENDED values (1);</copy>
-
-1 row created.
-````
-````
-SQL> <copy>insert into app_common.T_METADATA values (1);</copy>
-
-1 row created.
-````
-````
-SQL> <copy>commit;</copy>
-
-Commit complete.
+PL/SQL procedure successfully completed.
 ````
 
 Now we can patch the application in the Application PDB and see the effect of our actions.
@@ -427,16 +441,16 @@ Execute the following statements to see the result:
 ````
 SQL> <copy>select * from app_common.T_DATA;</copy>
 
-ID 
+        ID 
 ---------- 
-1 
+         1 
 ````
 ````
 SQL> <copy>select * from app_common.T_EXTENDED;</copy>
 
-ID 
+        ID 
 ---------- 
-1 
+         1 
 ````
 ````
 SQL> <copy>select * from app_common.T_METADATA;</copy>
@@ -480,9 +494,16 @@ ORA-65097: DML into a data link table is outside an application action
 
 0 rows deleted.
 ````
+````
+SQL> delete app_common.T_EXTENDED where id=1;
 
-- I miss the other 2 tables
+0 rows deleted.
+````
+````
+SQL> delete app_common.T_METADATA where id=1;
 
+0 rows deleted.
+````
 
 In some tables we inserted a record with ID 2. So let us see how much of this information is available in the APP_ROOT
 
@@ -495,7 +516,7 @@ Session altered.
 ````
 SQL> <copy>select * from app_common.T_DATA;</copy>
 
-ID 
+        ID 
 ----------
          1
 ````
@@ -503,7 +524,7 @@ ID
 ````
 SQL> <copy>select * from app_common.T_EXTENDED;</copy>
 
-ID 
+        ID 
 ----------
          1
 ````
@@ -511,7 +532,7 @@ ID
 ````
 SQL> <copy>select * from app_common.T_METADATA;</copy>
 
-ID 
+        ID 
 ----------
          1
 ````
@@ -526,9 +547,13 @@ DATA | APP_ROOT | Data visible in APP_PDB, cannot change data from APP PDB |
 EXTENDED DATA | APP_ROOT | Data visible in APP_PDB, cannot change shared data |
  | APP_PDB | All actions allowed, data is stored locally QUERYING ACROSS CONTAINERS |
 
-````
+## Container queries ##
+
 We can query across containers. For example, If we have an application for multiple stores where each store has their own PDB, we can very easily find out how many orders each store has received.
+
 To build a small demo environment, we are going to build an Application Root called STORE_MASTER with stores (read PDBs) in various countries in the world. We are going to start with stores in Amsterdam, Paris and London.
+
+````
  RUN THE SCRIPT 02_SETUP_STORES.SH FROM THE ~/HOL/LAB05 DIRECTORY
 The result is the following
  Application Root called STORE_MASTER
