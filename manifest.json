@@ -15,8 +15,14 @@
         {
             "title": "Email from DBaaS",
             "description":"Extra steps to send email from DBaaS",
-            "publisheddate": "01/15/2020",
+            "publisheddate": "04/15/2020",
             "filename":"./dir-email/email.md"
+        },
+        {
+            "title": "Multitenant",
+            "description":"Some tests regarding Application Containers",
+            "publisheddate": "04/20/2020",
+            "filename":"./dir-multitenant/application-containers.md"
         },
         {
             "title": "xRDP on Linux 7",
