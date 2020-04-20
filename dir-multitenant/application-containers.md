@@ -48,7 +48,7 @@ Pluggable database created.
 After creating it, we need to open the database to use it:
 
 ````
-SQL> </copy>alter pluggable database APP_ROOT open;</copy>
+SQL> <copy>alter pluggable database APP_ROOT open;</copy>
 
 Pluggable database altered.
 ````
@@ -109,23 +109,24 @@ SQL> <copy>alter pluggable database application APP01 end install;</copy>
 Pluggable database altered.
 ````
 
-The actual statements that were recorded are visible in the view DBA_APP_STATEMENTS
+The actual statements that were recorded are visible in the view DBA\_APP\_STATEMENTS
 
 ````
 SQL> <copy>select app_statement from dba_app_statements where app_name='APP01' order by statement_id;</copy>
 
 APP_STATEMENT
--------------------------------------------------------------------------------- 
-SYS 
-alter pluggable database application APP01 begin install '1.0' 
-create user app_test identified by VALUES 'S:329113796ABF0CA4AE9CA0A108A27961EB 
-create table app_test.mytable (id number) 
-alter user APP_TEST quota unlimited on SYSTEM 
-insert into app_test.mytable values (1) 
-commit 
+--------------------------------------------------------------------------------
+SYS
+BEGIN DBMS_APPLICATION_INFO.SET_MODULE('sqlplus@multicom (TNS V1-V3)', ''); END;
+alter pluggable database application APP01 begin install '1.0'
+create user app_test identified by values *
+alter user APP_TEST quota unlimited on SYSTEM
+create table app_test.mytable (id number)
+insert into app_test.mytable values (1)
+commit
 alter pluggable database application APP01 end install
 
-8 rows selected.
+9 rows selected.
 ````
 
 As you can see, each statement that we have executed will be recorded. Any statements that lead to an error (because of a typo or because of another error) are discarded. This way the APPLICATION is basically the install script you would normally run for a new installation at a new customer.
