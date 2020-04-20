@@ -63,6 +63,12 @@ SQL> <copy>alter session set container=APP_ROOT;</copy>
 Session altered.
 ````
 
+For DBaaS or TDE, enable keystore:
+
+````
+ADMINISTER KEY MANAGEMENT SET KEY USING TAG 'APP_ROOT' FORCE KEYSTORE IDENTIFIED BY WElcome__123 WITH BACKUP USING 'create_APP_ROOT';
+````
+
 We can now define out first application with version 1.0:
 
 ````
@@ -322,7 +328,7 @@ Session altered.
 ````
 
 ````
-SQL> <copy>alter pluggable database application APP01 begin patch 1.3;</copy>
+SQL> <copy>alter pluggable database application APP01 begin patch 2;</copy>
 
 Pluggable database altered.
 ````
