@@ -537,15 +537,17 @@ SQL> <copy>select * from app_common.T_METADATA;</copy>
          1
 ````
 
-To summarize, the SHARING clause has the following options 
+To summarize, the SHARING clause has the following options:
 
-SHARING clause | DML IN | Result |
-METADATA | APP_ROOT | Result not visible in APP_PDB |
- | APP_PDB | Acts like local table |
-DATA | APP_ROOT | Data visible in APP_PDB, cannot change data from APP PDB |
- | APP_PDB | Not allowed, read only table |
-EXTENDED DATA | APP_ROOT | Data visible in APP_PDB, cannot change shared data |
- | APP_PDB | All actions allowed, data is stored locally QUERYING ACROSS CONTAINERS |
+<table>
+<tr><th>SHARING clause</th><th>DML IN</th><th>Result</th></tr>
+<tr><td>DATA</td><td>APP_ROOT</td><td>Data visible in APP_PDB, cannot change data from APP PDB</th></tr>
+<tr><td></td><td>APP_PDB</td><td>Not allowed, read only table</th></tr>
+<tr><td>EXTENDED DATA</td><td>APP_ROOT</td><td>Data visible in APP_PDB, cannot change shared data</th></tr>
+<tr><td></td><td>APP_PDB</td><td>All actions allowed, data is stored locally</th></tr>
+<tr><td>METADATA</td><td>APP_ROOT</td><td>Data from APP_ROOT not visible in APP_PDB</th></tr>
+<tr><td></td><td>APP_PDB</td><td>Acts like local table</th></tr>
+</table>
 
 <!---## Container queries ##
 
