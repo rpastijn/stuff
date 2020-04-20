@@ -53,7 +53,7 @@ SQL> </copy>alter pluggable database APP_ROOT open;</copy>
 Pluggable database altered.
 ````
 
-## CREATING AN APPLICATION ##
+## Creating an application ##
 
 In order to create an application we need to be connected to the Application Root container. When an Application is created, you need to give it a version number and a name. All statements that are executed after the initial 'BEGIN' clause of the application are captured and can be replayed in the target PDB.
 
