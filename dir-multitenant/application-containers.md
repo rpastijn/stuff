@@ -549,6 +549,13 @@ To summarize, the SHARING clause has the following options:
 <tr><td></td><td>APP_PDB</td><td>Acts like local table</th></tr>
 </table>
 
+
+## Acknowledgements ##
+
+- **Author** - Robert Pastijn, Database Product Management, PTS EMEA - March 2017
+- **Added TDE lines** - Robert Pastijn, Database Product Management, PTS EMEA - April 2020 
+
+
 <!---## Container queries ##
 
 We can query across containers. For example, If we have an application for multiple stores where each store has their own PDB, we can very easily find out how many orders each store has received.
