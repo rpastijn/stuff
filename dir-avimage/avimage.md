@@ -1,12 +1,16 @@
 # Change Audit Vault image for training #
 
-Steps needed based on AV image v5
+
+## Description ##
+
+Steps that need to be taken to take an AV appliance image and update it so it can be run for the Oracle PTS Security Workshop.
 
 ## Get access to a new image ##
 
 - Provision a new image based on the latest source
 - Connect via VNC console to the image to change the IP address
 - Reboot the device to make ssh access possible
+- Connect to the image using SSH and become the root user
 
 ## Change sudo for easier root access ##
 
@@ -100,7 +104,7 @@ for x in {1..20}; do
     /bin/sed -i '/NIC_MAPPING/s/".*"/"eth0\/'$NEWMAC'"/' /usr/local/dbfw/etc/dbfw.conf
     break
   fi
-done>/copy>
+done</copy>
 ````
 
 Save the file and close the editor. Make sure the script can be executed by the root user:
@@ -150,7 +154,7 @@ After this, initiate shutdown of the image from the SSH connection:
 
 After disconnect, execute a STOP from the OCI console. After full shutdown, create a new image to use as a source for the workshop.
 
-# Acknowledgements #
+## Acknowledgements ##
 
-- **Robert Pastijn**, Oracle Database Development, initial version April 2020
+- **Author** - Robert Pastijn, Database Product Management, PTS EMEA - April 2020
 

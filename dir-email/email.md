@@ -161,3 +161,7 @@ END;
 SQL> <copy>execute send_mail('robert.pastijn@oracle.com','MySubject','My content');</copy>
 ````
 
+## Acknowledgements ##
+
+- **Author** - Robert Pastijn, Database Product Management, PTS EMEA - April 2020 
+
