@@ -29,6 +29,12 @@
             "description":"Setup xRDP on Linux 7 on OCI",
             "publisheddate": "03/20/2020",
             "filename":"./dir-xrdp/xrdp.md"
+        },
+        {
+            "title": "Change AV Image",
+            "description":"Changing the image for WS",
+            "publisheddate": "04/28/2020",
+            "filename":"./dir-avimage/avimage.md"
         }
     ]
 }
