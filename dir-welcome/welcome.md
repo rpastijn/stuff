@@ -8,7 +8,9 @@ This repository will be a collection of things that I found and described. I use
 
 - Links: Various links and URLs to PTS and other peoples resources (20-APR-2020)
 - Email: How to setup email on DBaaS (extra steps compared to ADB) (20-APR-2020)
-- xRDP: How to setup xrdp on a clean OCI Linux 7 image
+- xRDP: How to setup xrdp on a clean OCI Linux 7 image (20-APR-2020)
+- Application Containers: Update of the Application Containers lab so it runs on OCI DBaaS (20-APR-2020)
+- Update AuditVault image to run on OCI for workshops (28-APR-2020)
 
 ## Acknowledgements
 
