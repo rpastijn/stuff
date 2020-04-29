@@ -12,24 +12,6 @@ Steps that need to be taken to take an AV appliance image and update it so it ca
 - Reboot the device to make ssh access possible
 - Connect to the image using SSH and become the root user
 
-## Change sudo for easier root access ##
-
-Once logged in, I sometimes had problems accessing the root user. To make this easier, I changed the `sudoers` file to include support.
-
-When logged in as root, execute the following file using your favourite editor:
-
-````
-# <copy>sudoedit /etc/sudoers</copy>
-````
-
-Add the following line below the `root` entry:
-
-````
-<copy>support         ALL = (ALL) NOPASSWD: ALL</copy>
-````
-
-Save the file and exit.
-
 ## Add script to init.d for change ##
 
 The MAC address is used in some parts of the DBFW image. If the MAC address is not the same as the actual MAC address during boot, the system will start asking for the correct values.
@@ -69,6 +51,12 @@ start)
 esac
 
 exit $?</copy>
+````
+
+Make sure that the script is executable by changing the access permissions for the root user:
+
+````
+# <copy>chmod u+x dbfw-oraclepts</copy>
 ````
 
 After creating the new startup-script, we need to enable it for the next reboot:
@@ -137,6 +125,25 @@ Save the file and exit the editor. After this, make sure the file is executable:
 ````
 # <copy>chmod u+x /root/cleanip.sh</copy>
 ````
+
+## Change sudo for easier root access ##
+
+Once logged in, I sometimes had problems accessing the root user. To make this easier, I changed the `sudoers` file to include support.
+
+When logged in as root, execute the following file using your favourite editor:
+
+````
+# <copy>sudoedit /etc/sudoers</copy>
+````
+
+Add the following line below the `root` entry:
+
+````
+<copy>support         ALL = (ALL) NOPASSWD: ALL</copy>
+````
+
+Save the file and exit.
+
 
 ## Cleanup environment, shutdown and make image ##
 
