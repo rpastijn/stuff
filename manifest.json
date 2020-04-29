@@ -31,6 +31,12 @@
             "filename":"./dir-xrdp/xrdp.md"
         },
         {
+            "title": "DBMS_CLOUD Rest",
+            "description":"Example for DBMS_CLOUD REST on ADB",
+            "publisheddate": "04/29/2020",
+            "filename":"./dir-dbms-cloud-rest/dbms-cloud-rest.md"
+        },
+        {
             "title": "Change AV Image",
             "description":"Changing the image for WS",
             "publisheddate": "04/28/2020",
