@@ -268,10 +268,6 @@ SQL> <copy>begin
 
 procedure executed.
 ````
-
-
-ocid1.autonomousdatabase.oc1.eu-frankfurt-1.abtheljs75rgzcm4ahc4id2evwweyqbbffu3gfuea6ybeawhkqeewtajayka
-
 ## Acknowledgements ##
 
 - **Initial version** - Robert Pastijn, Oracle Product Development, 29-APR-2020
