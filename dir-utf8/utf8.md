@@ -101,6 +101,8 @@ ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 2864
 ORA-06512: at line 28
 ````
 
+This means the code has been executed but the DBMS_CLOUD package (which depends on the UTL_HTTP package) has a problem with the return message after succesful execution. If you check in the console, the NAT gateway has been created so the command was correct. There is just an issue with the response from the gateway.
+
 Executing the same code for the second time gives the following result:
 
 ````
@@ -111,7 +113,7 @@ ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 2864
 ORA-06512: at line 28
 ````
 
-This means the code has been executed but the DBMS_CLOUD package (which depends on the UTL_HTTP package) has a problem with the return message after succesful execution.
+This is a correct response as the NAT gateway already exists (and you can only have 1 per VCN).
 
 ## Retrieve headers while executing the request ##
 
