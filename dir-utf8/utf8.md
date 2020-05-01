@@ -150,10 +150,10 @@ header: Content-Length: 81
 
 ## Check on header options ##
 
-https://tools.ietf.org/html/rfc7231#section-3.1.2.2
+[https://tools.ietf.org/html/rfc7231#section-3.1.2.2](https://tools.ietf.org/html/rfc7231#section-3.1.2.2 "https://tools.ietf.org/html/rfc7231#section-3.1.2.2")
 
 Content-Encoding is primarily used to allow a representation's data to be compressed without losing the identity of its underlying media type.
 
-UTF8 is not a correct value
-UTL_HTTP gives the correct error
-The NAT gateway should be changed to not return the Content-EncodingL UTF8
+- UTF8 is not a correct value
+- UTL_HTTP gives the correct error
+- The NAT gateway should be changed to not return the Content-Encoding: UTF8
