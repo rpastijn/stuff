@@ -43,6 +43,12 @@
             "filename":"./dir-utf8/utf8.md"
         },
         {
+            "title": "Setup for Vijay",
+            "description":"Changes on Vijays image for Marketplace",
+            "publisheddate": "05/01/2020",
+            "filename":"./dir-autosetup-db/autosetup-db.md"
+        },
+        {
             "title": "Change AV Image",
             "description":"Changing the image for WS",
             "publisheddate": "04/28/2020",
