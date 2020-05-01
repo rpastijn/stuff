@@ -21,19 +21,6 @@ Gather the following information:
 	- OCID of a (test) compartment like `..`
 	- OCID of the new VCN like `..` 
 
-### My stuff ###
-
-- Generic information
-	- Tenancy OCID `ocid1.tenancy.oc1..aaaaaaaafj37mytx22oquorcznlfuh77cd45int7tt7fo27tuejsfqbybzrq`
-- OCI User information
-	- OCI user username `robert.pastijn@oracle.com`
-	- OCI user OCID `ocid1.user.oc1..aaaaaaaapkxconfncwlw3ep6fsh737tfkn7zrmoors5bocukvpwbmq7w6zba`
-	- Private key of used while creating the API Key
-	- API KeyFingerprint:  `d0:e8:36:4d:35:b3:49:6a:2e:10:ea:66:76:02:22:af`
-- Test information
-	- OCID of a (test) compartment like `ocid1.compartment.oc1..aaaaaaaaja5hmjbi6wxhyfsbk4ysztgzig5uvx7zljgwnenywjex4xmkcolq`
-	- OCID of the new VCN like `ocid1.vcn.oc1.eu-frankfurt-1.amaaaaaaobogfhqavfwcritmzctkin2nl6rmhfg2b5jvt7zk3m5e7pyyvg6a` 
-
 ### Create CLOUD credentials under users schema ###
 
 Inside the SQL Developer Web session, create a new credential by executing the following code (after replacing the required sections with your information):
