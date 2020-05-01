@@ -89,7 +89,7 @@ Paste the following code into the file:
 
 ````
 <copy>
-#!/bin.bash
+#!/bin/bash
 #
 # Startup script for Oracle Database
 #
