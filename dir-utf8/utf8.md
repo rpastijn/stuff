@@ -11,15 +11,14 @@ This example is to show the UTF8 issue currently with the NAT Rest API call in c
 Gather the following information:
 
 - Generic information
-	- Tenancy OCID `ocid1.tenancy.oc1..aaaaaaaa3fcdss2...kwpfbloh54cz7azsyjqgbl5qujnga`
+	- Tenancy OCID like `ocid1.tenancy.oc1..aaaaaaaa3fcdss2...kwpfbloh54cz7azsyjqgbl5qujnga`
 - OCI User information
-	- OCI user username `<username>`
-	- OCI user OCID `ocid1.user.oc1..aaaaaaaaw4....kxr6tkvqmflgmfihfigrnkp6dmkj7q`
-	- Private key of used while creating the API Key
-	- API KeyFingerprint:  `5d:6d:3f:3....9:ec:69:df:f5`
+	- OCI user OCID like `ocid1.user.oc1..aaaaaaaaw4....kxr6tkvqmflgmfihfigrnkp6dmkj7q`
+	- API KeyFingerprint like `5d:6d:....9:ec:69:df:f5`
 - Test information
-	- OCID of a (test) compartment like `..`
-	- OCID of the new VCN like `..` 
+	- OCID of a (test) compartment like `ocid1.compartment.oc1..aaaaaaaaja5hm...tgzig5uvx7zljgwnenywjex4xmkcolq`
+	- OCID of the new VCN like `ocid1.vcn.oc1.eu-frankfurt-1.amaaaaaaobogfhqavfwc...g2b5jvt7zk3m5e7pyyvg6a` 
+	- Private key of used while creating the API Key
 
 ### Create CLOUD credentials under users schema ###
 
