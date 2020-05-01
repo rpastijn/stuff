@@ -37,6 +37,12 @@
             "filename":"./dir-dbms-cloud-rest/dbms-cloud-rest.md"
         },
         {
+            "title": "UTF8 issue NAT",
+            "description":"Example for issue with UTF8 on NAT create",
+            "publisheddate": "05/01/2020",
+            "filename":"./dir-utf8/utf8.md"
+        },
+        {
             "title": "Change AV Image",
             "description":"Changing the image for WS",
             "publisheddate": "04/28/2020",
