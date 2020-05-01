@@ -20,7 +20,7 @@ Gather the following information:
 	- OCID of the new VCN like `ocid1.vcn.oc1.eu-frankfurt-1.amaaaaaaobogfhqavfwc...g2b5jvt7zk3m5e7pyyvg6a` 
 	- Private key of used while creating the API Key
 
-### Create CLOUD credentials under users schema ###
+## Create CLOUD credentials under users schema ##
 
 Inside the SQL Developer Web session, create a new credential by executing the following code (after replacing the required sections with your information):
 
