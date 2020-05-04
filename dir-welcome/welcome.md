@@ -12,6 +12,7 @@ This repository will be a collection of things that I found and described. I use
 - Application Containers: Update of the Application Containers lab so it runs on OCI DBaaS (20-APR-2020)
 - Update AuditVault image to run on OCI for workshops (28-APR-2020)
 - Example on using DBMS_CLOUD REST calls to the OCI API (29-APR-2020)
+- Example on how to use an external SMTP server for message forwarding (05-MAY-2020)
 
 ## Acknowledgements
 

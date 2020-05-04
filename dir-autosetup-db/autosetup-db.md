@@ -2,6 +2,10 @@
 
 ## x ##
 
+## Set PDBs to autostart ##
+
+
+
 ## Add systemd service for auto start ##
 
 (section based on https://oracle-base.com/articles/linux/linux-services-systemd#creating-linux-services)
@@ -94,11 +98,62 @@ Paste the following code into the file:
 # Startup script for Oracle Database
 #
 
+ORAENV_ASK=NO
+
 # First, start database from the /etc/oratab
 
 export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
 ${ORACLE_HOME}/bin/dbstart
 
+# Check if passwordfile exists (= first boot), if not create it
 
+PWDFILE="/home/oracle/instance_passwords.txt"
 
+if [ ! -f "$PWDFILE" ]
+then
+
+  # Generate new password
+
+  NEWPWD=` < /dev/urandom tr -dc "A-Za-z0-9" | head -c12`
+
+  # update system, sys for CDB1
+
+  ORACLE_SID=CDB1
+  . /usr/local/bin/oraenv
+
+  sqlplus / as sysdba @/home/oracle/scripts/change_password.sql $NEWPWD
+
+  # update system, sys for CDB2
+
+  ORACLE_SID=CDB2
+  . /usr/local/bin/oraenv
+
+  sqlplus / as sysdba @/home/oracle/scripts/change_password.sql $NEWPWD
+
+  # write to password file
+
+  echo "Your generated password is $NEWPWD" > $PWDFILE
+
+  # Chance hostname in listener and tnsnames
+
+  sed -i 's/(HOST =.*)/(HOST = '$HOSTNAME' )/g' $ORACLE_HOME/network/admin/tnsnames.ora
+  sed -i 's/(HOST =.*)/(HOST = '$HOSTNAME' )/g' $ORACLE_HOME/network/admin/listener.ora
+
+fi
+
+# Startup listeners
+
+  ORACLE_SID=CDB1
+  . /usr/local/bin/oraenv
+
+  lsnrctl start LISTCDB1
+  lsnrctl start LISTCDB2
+
+# End if file
+````
+
+Make sure the files are executable by oracle:
+
+````
+$ <copy>chmod u+x *_all.sh</copy>
 ````

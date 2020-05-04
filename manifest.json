@@ -43,6 +43,12 @@
             "filename":"./dir-utf8/utf8.md"
         },
         {
+            "title": "External SMTP for PaaS",
+            "description":"Forwarding to external SMTP server",
+            "publisheddate": "05/04/2020",
+            "filename":"./dir-external-smtp/external-smtp.md"
+        },
+        {
             "title": "Setup for Vijay",
             "description":"Changes on Vijays image for Marketplace",
             "publisheddate": "05/01/2020",
