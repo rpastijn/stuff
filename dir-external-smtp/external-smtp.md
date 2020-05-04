@@ -1,10 +1,10 @@
 # Using external SMTP with Oracle PaaS #
 
+## Description ## 
+
 Due to security reasons, Oracle has decided to close port 25 for all outgoing (email) traffic to the public internet. This means that sending email from an Oracle Cloud VM to a third party using port 25, the internet standard for a listening mail server, is not possible.
 
 Please note that this example was written for OCI Classic environments but is also applicable to Oracle OCI environments.
-
-## Description ## 
 
 MOS note 2079333.1 describes the possible work-arounds for this situation:
 
@@ -73,6 +73,7 @@ Hash the authentication file for sendmail
 ````
 # <copy>cd /etc/mail/auth</copy>
 ````
+
 ````
 # <copy>makemap -r hash gmail-auth < gmail-auth</copy>
 ````
@@ -103,7 +104,7 @@ Now change the sendmail.mc file to include the relay information. Open the sendm
 # <copy>vi /etc/mail/sendmail.mc</copy>
 ````
 
-(in vi, you can search using the ‘/’ command eg. /MAILER <enter>)
+(in vi, you can search using the '/' command eg. `/MAILER <enter>`)
 My initial entry was at line 174; Original entry looks like this:
 
 ````
