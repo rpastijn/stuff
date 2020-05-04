@@ -1,6 +1,6 @@
 # Using external SMTP with Oracle PaaS #
 
-## Description ## 
+## Description## 
 Due to security reasons, Oracle has decided to close port 25 for all outgoing (email) traffic to the public internet. This means that sending email from an Oracle Cloud VM to a third party using port 25, the internet standard for a listening mail server, is not possible. 
 
 MOS note 2079333.1 describes the possible work-arounds for this situation:
