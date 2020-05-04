@@ -377,64 +377,41 @@ Checklist based on https://docs.oracle.com/en/cloud/marketplace/partner-portal/o
 
 ### Mandatory image guidelines ###
 
-- SSH Host Keys MUST be unique to each instance. Use the oci-image-cleanup utility provided by the oci-utils package on GitHub.
-	- Script execution is in the lab
-- Images MUST ingest an SSH public key provided by a customer as part of the instance launch process.
-	- Source image was already setup to do this, not changed
-	- Key will be inserted into the root and opc .ssh/authorized keys
-- Ensure the image is cloud-init enabled.
-	- Is cloud-init enabled
-- Any authorized_keys files MUST only contain keys provided by the user when the instance is launched. Use the oci-imagecleanup utility provided by the oci-utils package on GitHub.
-	- Checked for root, opc and oracle user
-- The SSH service MUST be configured to prevent password-based logins.
-	- Checked
-- All entries in the /root/.ssh/authorized_keys file MUST contain no-port-forwarding, no-agent-forwarding, no-X11-forwarding.
-	- Checked (root .ssh dir is empty before image creation)
-- The root user MUST NOT have usable entries in the authorized_keys file. 
-	- Checked
-- Image MUST boot for all compatible shapes.
-	- Checked - Default shape is from OCI so already tested.
-- Image MUST NOT have any hard-coded MAC addresses, Empty the /etc/udev/rules.d/70-persistent-net.rules file.
-	- Checked
-- DHCP MUST be enabled, Ensure it is configured manually.
-	- Checked, done by oci-clean and cloud-init 
+<table>
+<tr><th>Requirement</th><th>Status</th><th>Remark</th></tr>
+<tr><td>SSH Host Keys MUST be unique to each instance. Use the oci-image-cleanup utility provided by the oci-utils package on GitHub</td><td>Script execution is in the lab</td><td></td></tr>
+<tr><td>Images MUST ingest an SSH public key provided by a customer as part of the instance launch process</td><td>Source image was already setup to do this, not changed</td><td>Key will be inserted into the root and opc .ssh/authorized keys</td></tr>
+<tr><td>Ensure the image is cloud-init enabled</td><td>Is cloud-init enabled</td><td></td></tr>
+<tr><td>Any authorized_keys files MUST only contain keys provided by the user when the instance is launched. Use the oci-imagecleanup utility provided by the oci-utils package on GitHub</td><td>Checked</td><td> for root, opc and oracle user</td></tr>
+<tr><td>The SSH service MUST be configured to prevent password-based logins</td><td>Checked</td><td></td></tr>
+<tr><td>All entries in the /root/.ssh/authorized_keys file MUST contain no-port-forwarding, no-agent-forwarding, no-X11-forwarding</td><td>Checked</td><td>root .ssh dir is empty before image creation</td></tr>
+<tr><td>The root user MUST NOT have usable entries in the authorized_keys file</td><td>Checked</td><td></td></tr>
+<tr><td>Image MUST boot for all compatible shapes</td><td>Checked</td><td>Default shape is from OCI so already tested</td></tr>
+<tr><td>Image MUST NOT have any hard-coded MAC addresses, Empty the /etc/udev/rules.d/70-persistent-net.rules file</td><td>Checked</td><td></td></tr>
+<tr><td>DHCP MUST be enabled, Ensure it is configured manually</td><td>Checked</td><td>Done by oci-clean and cloud-init</td></tr>
+</table> 
 
 ### RECOMMENDED IMAGE GUIDELINES ###
 
-- /etc/ssh/sshd_config
-	- PasswordAuthentication no
-	- ChallengeResponseAuthentication no
-	- UsePAM no (niet changed this one because of a warning for RH)
-- Mandatory Access Control (MAC) SHOULD be enabled. 
-	- SELinux is on 'ENFORCING'
-- An Operating System (OS) Firewall SHOULD be enabled and configured to block any ports not specifically required as indicated in the listing documentation.
-	- Firewalld is running, only port 22 open (not 1523 and 1524)
-- All sensitive data such as passwords and private keys SHOULD be removed. This type of data can often be found in log files, source code, or build artifacts.
-	- Checked
-- cloud-init packages SHOULD be available for use during instance launch.
-	- Checked
-- The standard SSH access account SHOULD use the username opc. Enable cloud-init for the image.
-	- Checked
-- The SSH service config /etc/ssh/sshd_config SHOULD NOT permit root logins. 
-	- Checked
-- The root user's login shell SHOULD be set to /sbin/nologin.
-	- Checked
-- Image software SHOULD be updated as part of the final packaging process.
-	- Checked, added as a step before image creation
-- Images SHOULD NOT have any operating system level users configured with a password.
-	- Checked
-- If a system level user is configured with a password, it MUST be uniquely generated the first time the instance launches. 
-	- Checked, sys/system/pdbadmin are all generated at initial boot
-- Application passwords SHOULD NOT be hard-coded. 
-	- Checked, sys/system/pdbadmin are all generated at initial boot
-- Images SHOULD run in paravirtualized mode. Images MAY run in native mode. Images SHOULD NOT run in emulated mode. 
-	- Running in native mode
-- Any network managers SHOULD be stopped.
-	- No network managers running in the image
-- Images SHOULD utilize the NTP service provided by OCI.
-	- Chrony is installed as indicated by the manual
-- Images SHOULD have iSCSI timeout values set for proper boot volume connectivity.
-	- Default image so I asume it is ok. 
+<table>
+<tr><th>Requirement</th><th>Status</th><th>Remark</th></tr>
+<tr><td>/etc/ssh/sshd_config</td><td>Checked</td><td>PasswordAuthentication no, ChallengeResponseAuthentication no, UsePAM no (not changed this one because of a warning for RH)</td></tr>
+<tr><td>Mandatory Access Control (MAC) SHOULD be enabled</td><td>Checked</td><td>SELinux is on 'ENFORCING'</td></tr>
+<tr><td>An Operating System (OS) Firewall SHOULD be enabled and configured to block any ports not specifically required as indicated in the listing documentation</td><td>Checked</td><td>Firewalld is running, only port 22 open (not 1523 and 1524)</td></tr>
+<tr><td>All sensitive data such as passwords and private keys SHOULD be removed. This type of data can often be found in log files, source code, or build artifacts</td><td>Checked</td><td></td></tr>
+<tr><td>cloud-init packages SHOULD be available for use during instance launch</td><td>Checked</td><td></td></tr>
+<tr><td>The standard SSH access account SHOULD use the username opc. Enable cloud-init for the image</td><td>Checked</td><td></td></tr>
+<tr><td>The SSH service config /etc/ssh/sshd_config SHOULD NOT permit root logins</td><td>Checked</td><td></td></tr>
+<tr><td>The root user's login shell SHOULD be set to /sbin/nologin</td><td>Checked</td><td></td></tr>
+<tr><td>Image software SHOULD be updated as part of the final packaging process</td><td>Checked</td><td>added as a step before image creation</td></tr>
+<tr><td>Images SHOULD NOT have any operating system level users configured with a password</td><td>Checked</td><td></td></tr>
+<tr><td>If a system level user is configured with a password, it MUST be uniquely generated the first time the instance launches</td><td>Checked</td><td>sys/system/pdbadmin are all generated at initial boot</td><tr>
+<tr><td>Application passwords SHOULD NOT be hard-coded</td><td>Checked</td><td>sys/system/pdbadmin are all generated at initial boot</td></tr>
+<tr><td>Images SHOULD run in paravirtualized mode. Images MAY run in native mode. Images SHOULD NOT run in emulated mode</td><td>Checked</td><td>Running in native mode</td></tr>
+<tr><td>Any network managers SHOULD be stopped</td><td>Checked</td><td>No network managers running in the image</td></tr>
+<tr><td>Images SHOULD utilize the NTP service provided by OCI</td><td>Checked</td><td>Chrony is installed as indicated by the manual</td></tr>
+<tr><td>Images SHOULD have iSCSI timeout values set for proper boot volume connectivity</td><td>Checked</td><td>Default image so I asume it is ok</td></tr>
+</table> 
 
 ## Acknowledgements ##
 
