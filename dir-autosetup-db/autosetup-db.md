@@ -326,12 +326,18 @@ Make sure the files are executable by oracle:
 $ <copy>chmod u+x *_all.sh</copy>
 ````
 
-## Cleanup and shutdown for image ##
+## Cleanup, update and shutdown for image ##
 
 Before we can create an image out of this environment, we need to run some cleanup tasks as root user:
 
 ````
 $ <copy>sudo -s</copy>
+````
+
+Update to the latest OS version:
+
+````
+# <copy>yum -y update</copy>
 ````
 
 Execute the oci-image-cleanup.sh script:
@@ -364,6 +370,71 @@ Shutdown the environment from the prompt:
 
 - Stop the instance in the OCI Console
 - Create a new custom image based on this environment
+
+## Checklist ##
+
+Checklist based on https://docs.oracle.com/en/cloud/marketplace/partner-portal/ocmpd/how-to-publish-an-oci-image-listing.pdf:
+
+### Mandatory image guidelines ###
+
+- SSH Host Keys MUST be unique to each instance. Use the oci-image-cleanup utility provided by the oci-utils package on GitHub.
+	- Script execution is in the lab
+- Images MUST ingest an SSH public key provided by a customer as part of the instance launch process.
+	- Source image was already setup to do this, not changed
+	- Key will be inserted into the root and opc .ssh/authorized keys
+- Ensure the image is cloud-init enabled.
+	- Is cloud-init enabled
+- Any authorized_keys files MUST only contain keys provided by the user when the instance is launched. Use the oci-imagecleanup utility provided by the oci-utils package on GitHub.
+	- Checked for root, opc and oracle user
+- The SSH service MUST be configured to prevent password-based logins.
+	- Checked
+- All entries in the /root/.ssh/authorized_keys file MUST contain no-port-forwarding, no-agent-forwarding, no-X11-forwarding.
+	- Checked (root .ssh dir is empty before image creation)
+- The root user MUST NOT have usable entries in the authorized_keys file. 
+	- Checked
+- Image MUST boot for all compatible shapes.
+	- Checked - Default shape is from OCI so already tested.
+- Image MUST NOT have any hard-coded MAC addresses, Empty the /etc/udev/rules.d/70-persistent-net.rules file.
+	- Checked
+- DHCP MUST be enabled, Ensure it is configured manually.
+	- Checked, done by oci-clean and cloud-init 
+
+### RECOMMENDED IMAGE GUIDELINES ###
+
+- /etc/ssh/sshd_config
+	- PasswordAuthentication no
+	- ChallengeResponseAuthentication no
+	- UsePAM no (niet changed this one because of a warning for RH)
+- Mandatory Access Control (MAC) SHOULD be enabled. 
+	- SELinux is on 'ENFORCING'
+- An Operating System (OS) Firewall SHOULD be enabled and configured to block any ports not specifically required as indicated in the listing documentation.
+	- Firewalld is running, only port 22 open (not 1523 and 1524)
+- All sensitive data such as passwords and private keys SHOULD be removed. This type of data can often be found in log files, source code, or build artifacts.
+	- Checked
+- cloud-init packages SHOULD be available for use during instance launch.
+	- Checked
+- The standard SSH access account SHOULD use the username opc. Enable cloud-init for the image.
+	- Checked
+- The SSH service config /etc/ssh/sshd_config SHOULD NOT permit root logins. 
+	- Checked
+- The root user's login shell SHOULD be set to /sbin/nologin.
+	- Checked
+- Image software SHOULD be updated as part of the final packaging process.
+	- Checked, added as a step before image creation
+- Images SHOULD NOT have any operating system level users configured with a password.
+	- Checked
+- If a system level user is configured with a password, it MUST be uniquely generated the first time the instance launches. 
+	- Checked, sys/system/pdbadmin are all generated at initial boot
+- Application passwords SHOULD NOT be hard-coded. 
+	- Checked, sys/system/pdbadmin are all generated at initial boot
+- Images SHOULD run in paravirtualized mode. Images MAY run in native mode. Images SHOULD NOT run in emulated mode. 
+	- Running in native mode
+- Any network managers SHOULD be stopped.
+	- No network managers running in the image
+- Images SHOULD utilize the NTP service provided by OCI.
+	- Chrony is installed as indicated by the manual
+- Images SHOULD have iSCSI timeout values set for proper boot volume connectivity.
+	- Default image so I asume it is ok. 
 
 ## Acknowledgements ##
 
