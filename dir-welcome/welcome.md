@@ -4,6 +4,10 @@
 
 This repository will be a collection of things that I found and described. I use it as my personal library but you are free to use it for your own purpose as well as long as you do not publish it as your own.
 
+## Disclaimer ##
+
+Unless explicitly identified as such, the sample code here is not certified or supported by Oracle; it is intended for educational or testing purposes only. Oracle Corporation does not warrant that this document is error-free. Oracle and all references to Oracle Products are trademarks or registered trademarks of Oracle Corporation. All other products or company names are used for identification purposes only, and may be trademarks of their respective owners.
+
 ## Contents description
 
 - Links: Various links and URLs to PTS and other peoples resources (20-APR-2020)
