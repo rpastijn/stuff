@@ -13,6 +13,11 @@ Sometimes it is interesting to keep track of links and workshops that my colleag
 - Robert Pastijn - Upgrade to 19c Labs
 	- [https://rpastijn.github.io/UpgradeTo19cHOL/](https://rpastijn.github.io/UpgradeTo19cHOL/ "https://rpastijn.github.io/UpgradeTo19cHOL/")
 
+### Under construction ###
+
+- Valentin Tabacaru - CI/CD Pipeline with Oracle Database and Python
+	- [https://vltabacaru.github.io/orcl-db-cicd-hol/](https://vltabacaru.github.io/orcl-db-cicd-hol/ "https://vltabacaru.github.io/orcl-db-cicd-hol/")
+
 ### Oracle Information Sources ###
 
 - Mike Dietrichs Upgrade page 
