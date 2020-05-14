@@ -49,6 +49,12 @@
             "filename":"./dir-external-smtp/external-smtp.md"
         },
         {
+            "title": "Change SPFILE",
+            "description":"Steps to change an SPFILE after a wrong parameter",
+            "publisheddate": "05/14/2020",
+            "filename":"./dir-spfile/spfile.md"
+        },
+        {
             "title": "Setup for Vijay",
             "description":"Changes on Vijays image for Marketplace",
             "publisheddate": "05/01/2020",
