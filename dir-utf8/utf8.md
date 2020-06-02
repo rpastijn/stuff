@@ -61,7 +61,7 @@ Using the gathered details, attempt to create a new NAT gateway by executing the
   v_region          varchar2(200)  := 'your region'; --like 'eu-frankfurt-1';
   v_url             varchar2(200)  := 'https://iaas.{region}.oraclecloud.com';
   v_vcn_id          varchar2(200)  := 'VCN OCID where NAT gateway needs to be created';
-  v_compartment_id  varchar2(100)  :=  'Compartment OCID where VCN is located';
+  v_compartment_id  varchar2(100)  := 'Compartment OCID where VCN is located';
   v_display_name    varchar2(200)  := 'MyNatGateway';
   v_credential      varchar2(200)  := 'OCI_CRED';
 
