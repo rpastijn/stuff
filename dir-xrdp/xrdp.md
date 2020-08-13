@@ -18,6 +18,12 @@ In a default Linux 7 image on OCI, there is no desktop installed. So before we c
 $ <copy>sudo -s</copy>
 ````
 
+````
+<copy>${ORACLE_HOME}/bin/sqlplus -s '/ as sysdba' << EOF
+ alter user sys identified by "${NEWPASS}" container=all;
+EOF</copy>
+````
+
 Next we can have the YUM package manager install the files for the GUI:
 
 ````
