@@ -13,6 +13,12 @@
             "filename":"./dir-links/links.md"
         },
         {
+            "title": "Custom image from MP image",
+            "description":"Create custom image from Marketplace image",
+            "publisheddate": "08/27/2020",
+            "filename":"./dir-mp-to-custom/mp-to-custom.md"
+        },
+        {
             "title": "Email from DBaaS",
             "description":"Extra steps to send email from DBaaS",
             "publisheddate": "04/15/2020",
