@@ -34,7 +34,7 @@ Start the new instance and continue
 
 ## Step 3 - Create a new dummy instance ##
 
-- Take a small VM size (CPU does not matter)
+- Create a new instance (the more CPUs the better, I usually use 8)
 - Accept the smallest (default) bootdisk size
 - Make sure that the instance is created in the same region and AD as the source
 - Put in your personal SSH key as you need to login
