@@ -30,13 +30,24 @@ To find root CA
 
 ````
 # <copy>openssl s_client -crlf -quiet -connect smtp.email.eu-frankfurt-1.oci.oraclecloud.com:587 -starttls smtp</copy>
+depth=2 C = US, O = DigiCert Inc, OU = www.digicert.com, CN = DigiCert Global Root CA
+verify return:1
+depth=1 C = US, O = DigiCert Inc, CN = DigiCert SHA2 Secure Server CA
+verify return:1
+depth=0 C = US, ST = California, L = Redwood City, O = Oracle Corporation, OU = Oracle OCI-PROD FRANKFURT, CN = smtp.email.eu-frankfurt-1.oci.oraclecloud.com
+verify return:1
+250 Ok
 ````
 
-For Oracle they are currently Digicert CA:
+The root certificate used for a certain region can be found in the result in the first ````CN=```` value. Please note that Oracle can use different root certificates for the various OCI regions. In the example, for Franfurt region, the root certificate is **Digicert Global Root CA**'.
+
+Find the root certificate that you need (for DigiCert) on the following page:
 
 ````
-<copy>https://global-root-ca.chain-demos.digicert.com/info/index.html</copy>
+<copy>https://www.digicert.com/kb/digicert-root-certificates.htm</copy>
 ````
+
+When you download the PEM file, the following should be the contents:
 
 ````
 <copy>-----BEGIN CERTIFICATE-----
@@ -117,11 +128,11 @@ IS
  
   mail_conn utl_smtp.connection;
   username varchar2(1000):= 'ocid1.user.oc1..aaaaaaaapkxconfncwlw3ep6fsh737tfkn7zrmoors5bocukvpwbmq7w6zba@ocid1.tenancy.oc1..aaaaaaaafj37mytx22oquorcznlfuh77cd45int7tt7fo27tuejsfqbybzrq.eo.comocid1.user.oc1.username';
-  passwd varchar2(50):= '9wn3G(3kN}v8c8!Vp[dk';
+  passwd varchar2(50):= '<password>';
   msg_from varchar2(50) := 'sendmail@oraclepts.nl';
   mailhost VARCHAR2(50) := 'smtp.email.eu-frankfurt-1.oci.oraclecloud.com';
   wallet_path varchar2(100) := 'file:/home/oracle/email_wallet';
-  wallet_password varchar2(100) := 'WElcome__123';
+  wallet_password varchar2(100) := '<your wallet password>';
  
 BEGIN
   mail_conn := UTL_smtp.open_connection( host => mailhost, port => 587, wallet_path => wallet_path, wallet_password => wallet_password );
@@ -161,7 +172,10 @@ END;
 SQL> <copy>execute send_mail('robert.pastijn@oracle.com','MySubject','My content');</copy>
 ````
 
+Hint for Oracle colleagues; the new mailsystem is a bit strict and tries to flush out as much spam as possible. The above command did not result in an email to my Oracle.com account. Changing it to a gmail.com or anything less strict resulted in a valid mail (although marked as SPAM)..
+
 ## Acknowledgements ##
 
-- **Author** - Robert Pastijn, Database Product Management, PTS EMEA - April 2020 
+- **Author** - Robert Pastijn, Database Product Management, PTS EMEA - April 2020
+- Updated May 27th 2021 to add multiple certificate options after working with Ramesh Jadda
 
